@@ -1,0 +1,34 @@
+import uuid
+from flask import Flask, jsonify
+from flask_cors import CORS # Required to allow JavaScript in the browser to call this API
+
+# --- Setup ---
+app = Flask(__name__)
+# Enable CORS for development so the browser can access the API
+CORS(app) 
+
+# --- UUID Generation Function ---
+def generate_uuid_v4():
+    """Generates a standard, randomly generated UUID v4 string."""
+    return str(uuid.uuid4())
+
+# --- API Endpoint ---
+@app.route('/api/v1/generate_uuid', methods=['GET'])
+def get_uuid():
+    """
+    Handles GET request to /api/v1/generate_uuid.
+    Returns the generated UUID v4 in JSON format.
+    """
+    new_uuid = generate_uuid_v4()
+    return jsonify({
+        "success": True,
+        "uuid": new_uuid,
+        "message": "UUID v4 generated successfully."
+    })
+
+# --- Main Runner ---
+if __name__ == '__main__':
+    # Run the server. You would typically run this with gunicorn or wait for
+    # a proper deployment environment.
+    print("Starting Flask UUID Generator API on http://127.0.0.1:5000/api/v1/generate_uuid")
+    app.run(debug=True, port=5000)
